@@ -15,6 +15,7 @@
 		352E1E97201713AF001D7BD2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 352E1E96201713AF001D7BD2 /* main.m */; };
 		352E1EA1201713AF001D7BD2 /* Location_DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 352E1EA0201713AF001D7BD2 /* Location_DemoTests.m */; };
 		352E1EAC201713AF001D7BD2 /* Location_DemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 352E1EAB201713AF001D7BD2 /* Location_DemoUITests.m */; };
+		35640BC3201F020600B9604C /* CCLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 35640BC2201F020600B9604C /* CCLocation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,8 @@
 		352E1EA7201713AF001D7BD2 /* Location_DemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Location_DemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		352E1EAB201713AF001D7BD2 /* Location_DemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Location_DemoUITests.m; sourceTree = "<group>"; };
 		352E1EAD201713AF001D7BD2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		35640BC1201F020600B9604C /* CCLocation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCLocation.h; sourceTree = "<group>"; };
+		35640BC2201F020600B9604C /* CCLocation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CCLocation.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +108,8 @@
 				352E1E88201713AF001D7BD2 /* AppDelegate.m */,
 				352E1E8A201713AF001D7BD2 /* ViewController.h */,
 				352E1E8B201713AF001D7BD2 /* ViewController.m */,
+				35640BC1201F020600B9604C /* CCLocation.h */,
+				35640BC2201F020600B9604C /* CCLocation.m */,
 				352E1E8D201713AF001D7BD2 /* Main.storyboard */,
 				352E1E90201713AF001D7BD2 /* Assets.xcassets */,
 				352E1E92201713AF001D7BD2 /* LaunchScreen.storyboard */,
@@ -200,6 +205,11 @@
 					352E1E83201713AF001D7BD2 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					352E1E9B201713AF001D7BD2 = {
 						CreatedOnToolsVersion = 9.2;
@@ -265,6 +275,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35640BC3201F020600B9604C /* CCLocation.m in Sources */,
 				352E1E8C201713AF001D7BD2 /* ViewController.m in Sources */,
 				352E1E97201713AF001D7BD2 /* main.m in Sources */,
 				352E1E89201713AF001D7BD2 /* AppDelegate.m in Sources */,
@@ -431,7 +442,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = M3YN599LE4;
 				INFOPLIST_FILE = Location_Demo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "cc.com.Location-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -444,7 +457,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = M3YN599LE4;
 				INFOPLIST_FILE = Location_Demo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "cc.com.Location-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
