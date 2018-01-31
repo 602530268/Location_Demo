@@ -16,6 +16,7 @@
 		352E1EA1201713AF001D7BD2 /* Location_DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 352E1EA0201713AF001D7BD2 /* Location_DemoTests.m */; };
 		352E1EAC201713AF001D7BD2 /* Location_DemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 352E1EAB201713AF001D7BD2 /* Location_DemoUITests.m */; };
 		35640BC3201F020600B9604C /* CCLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 35640BC2201F020600B9604C /* CCLocation.m */; };
+		358087862021AE0200B80271 /* LocationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 358087852021AE0200B80271 /* LocationVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,8 @@
 		352E1EAD201713AF001D7BD2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		35640BC1201F020600B9604C /* CCLocation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCLocation.h; sourceTree = "<group>"; };
 		35640BC2201F020600B9604C /* CCLocation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CCLocation.m; sourceTree = "<group>"; };
+		358087842021AE0200B80271 /* LocationVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocationVC.h; sourceTree = "<group>"; };
+		358087852021AE0200B80271 /* LocationVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocationVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +111,8 @@
 				352E1E88201713AF001D7BD2 /* AppDelegate.m */,
 				352E1E8A201713AF001D7BD2 /* ViewController.h */,
 				352E1E8B201713AF001D7BD2 /* ViewController.m */,
+				358087842021AE0200B80271 /* LocationVC.h */,
+				358087852021AE0200B80271 /* LocationVC.m */,
 				35640BC1201F020600B9604C /* CCLocation.h */,
 				35640BC2201F020600B9604C /* CCLocation.m */,
 				352E1E8D201713AF001D7BD2 /* Main.storyboard */,
@@ -278,6 +283,7 @@
 				35640BC3201F020600B9604C /* CCLocation.m in Sources */,
 				352E1E8C201713AF001D7BD2 /* ViewController.m in Sources */,
 				352E1E97201713AF001D7BD2 /* main.m in Sources */,
+				358087862021AE0200B80271 /* LocationVC.m in Sources */,
 				352E1E89201713AF001D7BD2 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

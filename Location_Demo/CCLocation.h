@@ -71,18 +71,40 @@ typedef void(^FailCallback)(NSError *error);
 
 /*
  地理编码
+ 属性说明:
+ placemark.name:位置名称
+ placemark.addressDictionary:位置信息，字典
+ placemark.location:位置坐标，不一定和传入参数一致
+ 
+ placemark.addreddDictionary: {
+    City = 城市;
+    Country = 国家;
+    CountryCode = CN;
+    FormattedAddressLines =     (
+        详细地址
+    );
+    Name = 名字;
+    State = "上一级";
+ }
  */
 - (void)geocodeAddressString:(NSString *)address block:(PlacemarkCallback)block fail:(FailCallback)fail;
 
 /*
  反地理编码
- placemark.name:位置名称
- placemark.addressDictionary:位置信息，字典
- placemark.location:位置坐标，不一定和传入参数一致
  */
 - (void)reverseGeocodeLocation:(CLLocation *)location block:(PlacemarkCallback)block fail:(FailCallback)fail;
 - (void)reverseGeocodeCoordinate:(CLLocationCoordinate2D)coordinate block:(PlacemarkCallback)block fail:(FailCallback)fail;
 
+/*
+ 后台定位低功耗设置,设置后，当定位超过该距离或超过该时间后才会去进行下一次定位，避免多次定位导致耗电量增加
+ distance:距离(米)
+ timeout:时间(秒)
+ */
+- (void)delayUpdateLocationWith:(CLLocationDistance)distance timeout:(NSTimeInterval)timeout;
 
+/*
+ 取消低功耗设置
+ */
+- (void)cancelDelayUpdateLocation;
 
 @end

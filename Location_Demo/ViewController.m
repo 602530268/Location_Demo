@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "LocationVC.h"
 #import "CCLocation.h"
 
 static NSString *cellIdentifier = @"cellIdentifier";
@@ -36,16 +37,17 @@ static NSString *cellIdentifier = @"cellIdentifier";
                     @"获取指南针信息",
                     @"停止获取指南针信息",
                     @"地理编码",
-                    @"反地理编码",].mutableCopy;
+                    @"反地理编码",
+                    @"查看历史定位",
+                    @"后台定位低功耗设置",
+                    @"取消低功耗设置"].mutableCopy;
     
     [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:cellIdentifier];
     
-    
-    
     if (@available(iOS 10.0, *)) {
-        [NSTimer scheduledTimerWithTimeInterval:3.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
-            NSLog(@"%@",_locations);
-        }];
+//        [NSTimer scheduledTimerWithTimeInterval:3.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
+//            NSLog(@"%@",_locations);
+//        }];
     } else {
         // Fallback on earlier versions
     }
@@ -123,9 +125,9 @@ static NSString *cellIdentifier = @"cellIdentifier";
             NSLog(@"海拔高度精度: %f",location.verticalAccuracy);
             NSLog(@"速度: %f",location.speed);
             
-            [_locations addObject:@{@"latitude":@(location.coordinate.latitude),
-                                    @"longitude":@(location.coordinate.longitude)}];
-            [[NSUserDefaults standardUserDefaults] setValue:_locations forKey:@"Locations"];
+//            [_locations addObject:@{@"latitude":@(location.coordinate.latitude),
+//                                    @"longitude":@(location.coordinate.longitude)}];
+//            [[NSUserDefaults standardUserDefaults] setValue:_locations forKey:@"Locations"];
         } fail:^(NSError *error) {
             
         }];
@@ -162,6 +164,16 @@ static NSString *cellIdentifier = @"cellIdentifier";
         } fail:^(NSError *error) {
             
         }];
+    }else if (indexPath.row == 10) {
+        //查看历史定位
+        LocationVC *vc = [[LocationVC alloc] init];
+        [self presentViewController:vc animated:YES completion:nil];
+    }else if (indexPath.row == 11) {
+        //后台定位低功耗设置
+        [[CCLocation shareInstance] delayUpdateLocationWith:10.0 timeout:10.0f];
+    }else if (indexPath.row == 12) {
+        //取消低功耗设置
+        [[CCLocation shareInstance] cancelDelayUpdateLocation];
     }
 }
 
