@@ -13,6 +13,7 @@
     LocationCallback _locationCallback;
     BOOL _keepLocation; //持续定位
     HeadingCallback _headingCallback;
+    FailCallback _failCallback;
 }
 
 @property(nonatomic,strong) CLLocationManager *locationManager;
@@ -45,7 +46,7 @@
         // Fallback on earlier versions
     }
     [_locationManager requestAlwaysAuthorization];  //一直保持定位
-//    [_locationManager requestWhenInUseAuthorization]; //使用期间定位
+    [_locationManager requestWhenInUseAuthorization]; //使用期间定位
 }
 
 /*
@@ -88,8 +89,9 @@
 /*
  获取当前定位
  */
-- (void)updateLocationWithDesiredAccuracy:(CLLocationAccuracy)desiredAccuracy block:(LocationCallback)block {
+- (void)updateLocationWithDesiredAccuracy:(CLLocationAccuracy)desiredAccuracy block:(LocationCallback)block fail:(FailCallback)fail {
     _locationCallback = block;
+    _failCallback = fail;
     _keepLocation = NO;
     self.locationManager.desiredAccuracy = desiredAccuracy;
     [self.locationManager startUpdatingLocation];
@@ -98,8 +100,9 @@
 /*
  持续获取当前定位
  */
-- (void)keepUpdateLocationWithDesiredAccuracy:(CLLocationAccuracy)desiredAccuracy distanceFilter:(CGFloat)distanceFilter block:(LocationCallback)block {
+- (void)keepUpdateLocationWithDesiredAccuracy:(CLLocationAccuracy)desiredAccuracy distanceFilter:(CGFloat)distanceFilter block:(LocationCallback)block fail:(FailCallback)fail {
     _locationCallback = block;
+    _failCallback = fail;
     _keepLocation = YES;
     self.locationManager.desiredAccuracy = desiredAccuracy;
     self.locationManager.distanceFilter = distanceFilter;
@@ -219,6 +222,10 @@
         NSLog(@"定位权限的问题");
         [self.locationManager stopUpdatingLocation];
         self.locationManager = nil;
+    }
+    
+    if (_failCallback) {
+        _failCallback(error.code);
     }
 }
 

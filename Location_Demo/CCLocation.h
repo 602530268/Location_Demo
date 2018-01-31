@@ -13,6 +13,7 @@
 typedef void(^LocationCallback)(CLLocation *location);
 typedef void(^HeadingCallback)(CGFloat heading);
 typedef void(^PlacemarkCallback)(CLPlacemark *placemark);
+typedef void(^FailCallback)(CLError code);
 
 @interface CCLocation : NSObject
 
@@ -39,14 +40,14 @@ typedef void(^PlacemarkCallback)(CLPlacemark *placemark);
  location.horizontalAccuracy:位置的精度(半径)。位置精度通过一个圆表示，实际位置可能位于这个圆内的任何地方。这个圆是由coordinate(坐标)和horizontalAccuracy(半径)共同决定的，horizontalAccuracy的值越大，那么定义的圆就越大，因此位置精度就越低。如果horizontalAccuracy的值为负，则表明coordinate的值无效
  location.speed:速度。该属性是通过比较当前位置和前一个位置，并比较它们之间的时间差异和距离计算得到的。鉴于Core Location更新的频率，speed属性的值不是非常精确，除非移动速度变化很小
  */
-- (void)updateLocationWithDesiredAccuracy:(CLLocationAccuracy)desiredAccuracy block:(LocationCallback)block;
+- (void)updateLocationWithDesiredAccuracy:(CLLocationAccuracy)desiredAccuracy block:(LocationCallback)block fail:(FailCallback)fail;
 
 /*
  持续获取当前定位
  desiredAccuracy:定位所需精度
  distanceFilter:定位频率
  */
-- (void)keepUpdateLocationWithDesiredAccuracy:(CLLocationAccuracy)desiredAccuracy distanceFilter:(CGFloat)distanceFilter block:(LocationCallback)block;
+- (void)keepUpdateLocationWithDesiredAccuracy:(CLLocationAccuracy)desiredAccuracy distanceFilter:(CGFloat)distanceFilter block:(LocationCallback)block fail:(FailCallback)fail;
 
 /*
  停止获取定位
