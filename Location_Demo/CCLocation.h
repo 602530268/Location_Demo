@@ -13,7 +13,7 @@
 typedef void(^LocationCallback)(CLLocation *location);
 typedef void(^HeadingCallback)(CGFloat heading);
 typedef void(^PlacemarkCallback)(CLPlacemark *placemark);
-typedef void(^FailCallback)(CLError code);
+typedef void(^FailCallback)(NSError *error);
 
 @interface CCLocation : NSObject
 
@@ -67,7 +67,7 @@ typedef void(^FailCallback)(CLError code);
 /*
  地理编码
  */
-- (void)geocodeAddressString:(NSString *)address block:(PlacemarkCallback)block;
+- (void)geocodeAddressString:(NSString *)address block:(PlacemarkCallback)block fail:(FailCallback)fail;
 
 /*
  反地理编码
@@ -75,8 +75,8 @@ typedef void(^FailCallback)(CLError code);
  placemark.addressDictionary:位置信息，字典
  placemark.location:位置坐标，不一定和传入参数一致
  */
-- (void)reverseGeocodeLocation:(CLLocation *)location block:(PlacemarkCallback)block;
-- (void)reverseGeocodeCoordinate:(CLLocationCoordinate2D)coordinate block:(PlacemarkCallback)block;
+- (void)reverseGeocodeLocation:(CLLocation *)location block:(PlacemarkCallback)block fail:(FailCallback)fail;
+- (void)reverseGeocodeCoordinate:(CLLocationCoordinate2D)coordinate block:(PlacemarkCallback)block fail:(FailCallback)fail;
 
 
 

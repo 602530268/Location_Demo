@@ -75,6 +75,17 @@ static NSString *cellIdentifier = @"cellIdentifier";
             NSLog(@"海拔: %f",location.altitude);
             NSLog(@"海拔高度精度: %f",location.verticalAccuracy);
             NSLog(@"速度: %f",location.speed);
+        } fail:^(NSError *error) {
+            NSLog(@"定位失败:");
+            if(error.code == kCLErrorLocationUnknown) {
+                NSLog(@"无法检索位置");
+            }
+            else if(error.code == kCLErrorNetwork) {
+                NSLog(@"网络问题");
+            }
+            else if(error.code == kCLErrorDenied) {
+                NSLog(@"定位权限的问题");
+            }
         }];
     }else if (indexPath.row == 3) {
         //持续获取当前定位
@@ -85,6 +96,8 @@ static NSString *cellIdentifier = @"cellIdentifier";
             NSLog(@"海拔: %f",location.altitude);
             NSLog(@"海拔高度精度: %f",location.verticalAccuracy);
             NSLog(@"速度: %f",location.speed);
+        } fail:^(NSError *error) {
+            
         }];
     }else if (indexPath.row == 4) {
         //停止获取定位
@@ -102,14 +115,22 @@ static NSString *cellIdentifier = @"cellIdentifier";
         [[CCLocation shareInstance] updateLocationWithDesiredAccuracy:kCLLocationAccuracyBest block:^(CLLocation *location) {
             [[CCLocation shareInstance] geocodeAddressString:@"深圳市" block:^(CLPlacemark *placemark) {
                 NSLog(@"%@,%@,%@",placemark.name,placemark.addressDictionary,placemark.location);
+            } fail:^(NSError *error) {
+                NSLog(@"地理编码出错,error: %@",error);
             }];
+        } fail:^(NSError *error) {
+            
         }];
     }else if (indexPath.row == 8) {
         //反地理编码
         [[CCLocation shareInstance] updateLocationWithDesiredAccuracy:kCLLocationAccuracyBest block:^(CLLocation *location) {
             [[CCLocation shareInstance] reverseGeocodeLocation:location block:^(CLPlacemark *placemark) {
                 NSLog(@"%@,%@,%@",placemark.name,placemark.addressDictionary,placemark.location);
+            } fail:^(NSError *error) {
+                NSLog(@"反地理编码出错,error: %@",error);
             }];
+        } fail:^(NSError *error) {
+            
         }];
     }
 }

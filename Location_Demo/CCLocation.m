@@ -139,7 +139,6 @@
 - (void)geocodeAddressString:(NSString *)address block:(PlacemarkCallback)block fail:(FailCallback)fail {
     [self.geocoder geocodeAddressString:address completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
         if (error) {
-            NSLog(@"编码坐标信息出错,error: %@",error);
             if (fail) {
                 fail(error);
             }
@@ -157,7 +156,6 @@
     
     [self.geocoder reverseGeocodeLocation:location completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
         if (error) {
-            NSLog(@"编码坐标信息出错,error: %@",error);
             if (fail) {
                 fail(error);
             }
@@ -219,13 +217,13 @@
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
     if(error.code == kCLErrorLocationUnknown) {
-        NSLog(@"无法检索位置");
+//        NSLog(@"无法检索位置");
     }
     else if(error.code == kCLErrorNetwork) {
-        NSLog(@"网络问题");
+//        NSLog(@"网络问题");
     }
     else if(error.code == kCLErrorDenied) {
-        NSLog(@"定位权限的问题");
+//        NSLog(@"定位权限的问题");
         [self.locationManager stopUpdatingLocation];
         self.locationManager = nil;
     }
