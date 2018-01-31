@@ -125,9 +125,9 @@ static NSString *cellIdentifier = @"cellIdentifier";
             NSLog(@"海拔高度精度: %f",location.verticalAccuracy);
             NSLog(@"速度: %f",location.speed);
             
-//            [_locations addObject:@{@"latitude":@(location.coordinate.latitude),
-//                                    @"longitude":@(location.coordinate.longitude)}];
-//            [[NSUserDefaults standardUserDefaults] setValue:_locations forKey:@"Locations"];
+            [_locations addObject:@{@"latitude":@(location.coordinate.latitude),
+                                    @"longitude":@(location.coordinate.longitude)}];
+            [[NSUserDefaults standardUserDefaults] setValue:_locations forKey:@"Locations"];
         } fail:^(NSError *error) {
             
         }];
