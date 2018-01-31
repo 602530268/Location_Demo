@@ -136,10 +136,13 @@
 /*
  地理编码
  */
-- (void)geocodeAddressString:(NSString *)address block:(PlacemarkCallback)block {
+- (void)geocodeAddressString:(NSString *)address block:(PlacemarkCallback)block fail:(FailCallback)fail {
     [self.geocoder geocodeAddressString:address completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
         if (error) {
             NSLog(@"编码坐标信息出错,error: %@",error);
+            if (fail) {
+                fail(error);
+            }
             return;
         }
         block(placemarks.lastObject);
@@ -150,11 +153,14 @@
 /*
  反地理编码
  */
-- (void)reverseGeocodeLocation:(CLLocation *)location block:(PlacemarkCallback)block {
+- (void)reverseGeocodeLocation:(CLLocation *)location block:(PlacemarkCallback)block fail:(FailCallback)fail {
     
     [self.geocoder reverseGeocodeLocation:location completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
         if (error) {
             NSLog(@"编码坐标信息出错,error: %@",error);
+            if (fail) {
+                fail(error);
+            }
             return;
         }
 //        for (CLPlacemark *placemark in placemarks) {
@@ -164,9 +170,9 @@
     }];
 }
 
-- (void)reverseGeocodeCoordinate:(CLLocationCoordinate2D)coordinate block:(PlacemarkCallback)block {
+- (void)reverseGeocodeCoordinate:(CLLocationCoordinate2D)coordinate block:(PlacemarkCallback)block fail:(FailCallback)fail {
     CLLocation *location = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
-    [self reverseGeocodeLocation:location block:block];
+    [self reverseGeocodeLocation:location block:block fail:fail];
 }
 
 # pragma mark - APIs(private)
@@ -225,7 +231,7 @@
     }
     
     if (_failCallback) {
-        _failCallback(error.code);
+        _failCallback(error);
     }
 }
 
@@ -233,6 +239,7 @@
     if (_headingCallback) {
         _headingCallback(newHeading.magneticHeading);
     }
+    
 }
 
 @end
