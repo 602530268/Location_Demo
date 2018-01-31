@@ -46,7 +46,7 @@
         // Fallback on earlier versions
     }
     [_locationManager requestAlwaysAuthorization];  //一直保持定位
-    [_locationManager requestWhenInUseAuthorization]; //使用期间定位
+//    [_locationManager requestWhenInUseAuthorization]; //使用期间定位
 }
 
 /*
@@ -104,9 +104,25 @@
     _locationCallback = block;
     _failCallback = fail;
     _keepLocation = YES;
+    
     self.locationManager.desiredAccuracy = desiredAccuracy;
     self.locationManager.distanceFilter = distanceFilter;
+
     [self.locationManager startUpdatingLocation];
+}
+
+/*
+ 后台持续定位
+ */
+- (void)keepUpdateLocationInBackgroundWithDesiredAccuracy:(CLLocationAccuracy)desiredAccuracy distanceFilter:(CGFloat)distanceFilter block:(LocationCallback)block fail:(FailCallback)fail {
+    
+    //后台持续定位
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9) {
+        self.locationManager.allowsBackgroundLocationUpdates = YES;
+    }else if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8) {
+        [self.locationManager requestAlwaysAuthorization];//在后台也可定位
+    }
+    [self keepUpdateLocationWithDesiredAccuracy:desiredAccuracy distanceFilter:distanceFilter block:block fail:fail];
 }
 
 /*

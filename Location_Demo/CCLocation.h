@@ -50,6 +50,11 @@ typedef void(^FailCallback)(NSError *error);
 - (void)keepUpdateLocationWithDesiredAccuracy:(CLLocationAccuracy)desiredAccuracy distanceFilter:(CGFloat)distanceFilter block:(LocationCallback)block fail:(FailCallback)fail;
 
 /*
+ 后台持续定位
+ */
+- (void)keepUpdateLocationInBackgroundWithDesiredAccuracy:(CLLocationAccuracy)desiredAccuracy distanceFilter:(CGFloat)distanceFilter block:(LocationCallback)block fail:(FailCallback)fail;
+
+/*
  停止获取定位
  */
 - (void)stopUpdateLocaiton;
