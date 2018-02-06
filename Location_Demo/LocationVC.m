@@ -34,12 +34,23 @@ static NSString *cellIdentifier = @"cellIdentifier";
     [self.view addSubview:_tableView];
     _tableView.frame = CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 400);
     
-    NSArray *arr = [[NSUserDefaults standardUserDefaults] valueForKey:@"LocationInfos"];
-    _datas = arr.mutableCopy;
-    if (_datas == nil) {
-         arr = [[NSUserDefaults standardUserDefaults] valueForKey:@"Locations"];
-        _datas = arr.mutableCopy;
+    NSArray *arr = [[NSUserDefaults standardUserDefaults] valueForKey:@"Locations"];
+    _datas = @[].mutableCopy;
+    for (NSDictionary *info in arr) {
+        NSTimeInterval time = [info[@"time"] floatValue];
+        BOOL add = YES;
+        for (NSDictionary *dic in _datas) {
+            NSTimeInterval dTime = [dic[@"time"] floatValue];
+            if (fabs(dTime - time) < 1.0f) {
+                add = NO;
+                break;
+            }
+        }
+        if (add) {
+            [_datas addObject:info];
+        }
     }
+
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
@@ -51,37 +62,56 @@ static NSString *cellIdentifier = @"cellIdentifier";
     return _datas.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-    
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+
     NSDictionary *info = _datas[indexPath.row];
     
     cell.textLabel.text = @"正在进行地理编码";
     cell.textLabel.adjustsFontSizeToFitWidth = YES;
     
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-hh-dd HH:mm:ss"];
+    
     if (info[@"address"] != nil) {
         NSLog(@"已进行过地理编码");
         cell.textLabel.text = info[@"address"];
+        
+        NSTimeInterval time = [info[@"time"] floatValue];
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:time];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@",[dateFormatter stringFromDate:date]];
     }else {
         NSLog(@"进行地理编码");
-        CGFloat latitude = [info[@"latitude"] floatValue];
-        CGFloat longitude = [info[@"longitude"] floatValue];
+        CGFloat latitude = [info[@"coordinate"][@"latitude"] floatValue];
+        CGFloat longitude = [info[@"coordinate"][@"longitude"] floatValue];
         CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
         
-        [[CCLocation shareInstance] reverseGeocodeCoordinate:coordinate block:^(CLPlacemark *placemark) {
-            NSString *country = placemark.addressDictionary[@"Country"];
-            NSString *city = placemark.addressDictionary[@"City"];
-            NSString *lines = [placemark.addressDictionary[@"FormattedAddressLines"] lastObject];
-            NSString *address = [NSString stringWithFormat:@"%@,%@,%@",country,city,lines];
-            NSLog(@"%@",address);
-            cell.textLabel.text = address;
-            
-            NSMutableDictionary *mInfo = info.mutableCopy;
-            [mInfo setValue:address forKey:@"address"];
-            [_datas replaceObjectAtIndex:indexPath.row withObject:mInfo];
-            [[NSUserDefaults standardUserDefaults] setValue:_datas forKey:@"LocationInfos"];
-        } fail:^(NSError *error) {
-            NSLog(@"地理编码失败: %@",error);
-        }];
+        dispatch_queue_t serial = dispatch_queue_create("serial", DISPATCH_QUEUE_SERIAL);
+        dispatch_async(serial, ^{
+            [[CCLocation shareInstance] reverseGeocodeCoordinate:coordinate block:^(CLPlacemark *placemark) {
+                NSString *country = placemark.addressDictionary[@"Country"];
+                NSString *city = placemark.addressDictionary[@"City"];
+                NSString *lines = [placemark.addressDictionary[@"FormattedAddressLines"] lastObject];
+                NSString *address = [NSString stringWithFormat:@"%@,%@,%@",country,city,lines];
+                NSLog(@"%@",address);
+                
+                NSTimeInterval time = [info[@"time"] floatValue];
+                NSDate *date = [NSDate dateWithTimeIntervalSince1970:time];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    cell.textLabel.text = address;
+                    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@",[dateFormatter stringFromDate:date]];
+                });
+                
+                NSMutableDictionary *mInfo = info.mutableCopy;
+                [mInfo setValue:address forKey:@"address"];
+                [_datas replaceObjectAtIndex:indexPath.row withObject:mInfo];
+                [[NSUserDefaults standardUserDefaults] setValue:_datas forKey:@"Locations"];
+            } fail:^(NSError *error) {
+                NSLog(@"地理编码失败: %@",error);
+            }];
+        });
+
     }
     
     return cell;

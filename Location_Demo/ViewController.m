@@ -58,6 +58,7 @@ static NSString *cellIdentifier = @"cellIdentifier";
         _locations = @[].mutableCopy;
     }
     NSLog(@"%@",_locations);
+    
 }
 
 # pragma mark - UITableViewDataSource
@@ -125,8 +126,12 @@ static NSString *cellIdentifier = @"cellIdentifier";
             NSLog(@"海拔高度精度: %f",location.verticalAccuracy);
             NSLog(@"速度: %f",location.speed);
             
-            [_locations addObject:@{@"latitude":@(location.coordinate.latitude),
-                                    @"longitude":@(location.coordinate.longitude)}];
+            
+            NSDictionary *info = @{@"coordinate":@{@"latitude":@(location.coordinate.latitude),
+                                                   @"longitude":@(location.coordinate.longitude)},
+                                   @"time":@([[NSDate date] timeIntervalSince1970]),
+                                   };
+            [_locations addObject:info];
             [[NSUserDefaults standardUserDefaults] setValue:_locations forKey:@"Locations"];
         } fail:^(NSError *error) {
             
@@ -170,7 +175,7 @@ static NSString *cellIdentifier = @"cellIdentifier";
         [self presentViewController:vc animated:YES completion:nil];
     }else if (indexPath.row == 11) {
         //后台定位低功耗设置
-        [[CCLocation shareInstance] delayUpdateLocationWith:10.0 timeout:10.0f];
+        [[CCLocation shareInstance] delayUpdateLocationWith:100.0f timeout:60.0f * 30];
     }else if (indexPath.row == 12) {
         //取消低功耗设置
         [[CCLocation shareInstance] cancelDelayUpdateLocation];
